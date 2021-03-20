@@ -1,5 +1,7 @@
 package Accenture.assesment.store.model;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Factura {
@@ -9,12 +11,30 @@ public class Factura {
 	boolean iva;
 	boolean domicilio;
 	List<Item> items;
+	Date fecha;
 	
+	
+	public Factura() {
+		items = new ArrayList<Item>();
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public List<Item> getItems() {
 		return items;
 	}
 	public void setItems(List<Item> items) {
-		this.items = items;
+		this.items.clear();
+		this.items.addAll(items);
 	}
 	public String getIdCliente() {
 		return idCliente;
