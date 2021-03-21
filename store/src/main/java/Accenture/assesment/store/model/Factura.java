@@ -10,13 +10,24 @@ public class Factura {
 	long valor;
 	boolean iva;
 	boolean domicilio;
+	boolean cancelado;
 	List<Item> items;
 	Date fecha;
 	
 	
 	public Factura() {
+		cancelado=false;
 		items = new ArrayList<Item>();
 	}
+	
+	public boolean isCancelado() {
+		return cancelado;
+	}
+
+	public void setCancelado(boolean cancelado) {
+		this.cancelado = cancelado;
+	}
+
 	public Date getFecha() {
 		return fecha;
 	}

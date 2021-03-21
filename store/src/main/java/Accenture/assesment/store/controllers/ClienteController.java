@@ -67,6 +67,7 @@ public class ClienteController {
 			resultado.setMensaje("No se encontro el pedido");
 			return ResponseEntity.badRequest().body(resultado);
 		}
+		facturas.add(factura);
 		
 		Date actual = new Date();
 		//long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-1);
@@ -93,14 +94,14 @@ public class ClienteController {
 			valor+=8000;
 		}
 		factura.setValor(valor);
-		facturas.add(factura);
+		
 		
 		resultado.setValorTransaccion(valor);
 		resultado.setMensaje("se añadieron los nuevos items el nuevo valor a pagar es: "+valor);
 		return ResponseEntity.accepted().body(resultado);
 	
 	}
-	@PostMapping("/cancelarPedido/{idFactura}")
+	@DeleteMapping("/cancelarPedido/{idFactura}")
 	public ResponseEntity<FacturaResultado> cancelarPedido(@PathVariable String idFactura){
 		Date actual = new Date();
 		Factura factura = FacturaUtils.buscarPorId(facturas, idFactura);
@@ -111,10 +112,20 @@ public class ClienteController {
 			resultado.setMensaje("No se encontro el pedido");
 			return ResponseEntity.badRequest().body(resultado);
 		}
-		//long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-1);
-		long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-factura.getFecha().getTime());
-		
-		
+		long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-1);
+		//long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-factura.getFecha().getTime());
+		if(diferencia<=12) {
+			resultado.setValorTransaccion(0);
+			resultado.setMensaje("Su pedido fue cancelado de forma exitosa!");
+			return ResponseEntity.accepted().body(resultado);
+		}
+		factura.setValor((long) (factura.getValor()*0.1));
+		factura.setCancelado(true);
+		factura.getItems().clear();
+		resultado.setValorTransaccion(factura.getValor());
+		resultado.setMensaje("Su pedido sera cancelado sin embargo se le cobrara el 10% del valor total de la factura: "+ factura.getValor());
+		facturas.add(factura);
+		return ResponseEntity.accepted().body(resultado);
 	}
 	
 	@GetMapping("/todasLasFacturas")
