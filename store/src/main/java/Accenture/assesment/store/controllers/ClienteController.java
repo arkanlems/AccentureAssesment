@@ -112,8 +112,8 @@ public class ClienteController {
 			resultado.setMensaje("No se encontro el pedido");
 			return ResponseEntity.badRequest().body(resultado);
 		}
-		long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-1);
-		//long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-factura.getFecha().getTime());
+		//long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-1);
+		long diferencia= TimeUnit.MILLISECONDS.toHours(actual.getTime()-factura.getFecha().getTime());
 		if(diferencia<=12) {
 			resultado.setValorTransaccion(0);
 			resultado.setMensaje("Su pedido fue cancelado de forma exitosa!");
